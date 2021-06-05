@@ -3,7 +3,17 @@
     <type>org.netbeans.modules.java.j2seproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-            <name>itpm3</name>
+          
+          <xsl:choose>
+  <xsl:when test="IT17168496">
+    <name>IT17168496</name>
+  </xsl:when>
+  <xsl:otherwise>
+   <name>itpm3</name>
+  </xsl:otherwise>
+</xsl:choose>
+
+          
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>
