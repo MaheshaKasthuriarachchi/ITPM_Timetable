@@ -7,8 +7,13 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-
 <xsl:choose>
+  <xsl:when test="IT18210002">
+   <project name="IT18210002" default="default" basedir=".">
+    <description>Builds, tests, and runs the project IT18210002.</description>
+  </xsl:when>
+  <xsl:otherwise>
+   <xsl:choose>
   <xsl:when test="IT17168496">
    <project name="IT17168496" default="default" basedir=".">
     <description>Builds, tests, and runs the project IT17168496.</description>
@@ -20,6 +25,8 @@
 </xsl:choose>
 
 
+  </xsl:otherwise>
+</xsl:choose>
 
     <import file="nbproject/build-impl.xml"/>
     <!--
@@ -69,8 +76,12 @@
       test-report:              JUnit report generation
 
     An example of overriding the target for project execution could look like this:
-
 <xsl:choose>
+  <xsl:when test="IT18210002">
+     <target name="run" depends="IT18210002-impl.jar">
+  </xsl:when>
+  <xsl:otherwise>
+   <xsl:choose>
   <xsl:when test="IT17168496">
     <target name="run" depends="IT17168496-impl.jar">
   </xsl:when>
@@ -78,7 +89,8 @@
       <target name="run" depends="itpm3-impl.jar">
   </xsl:otherwise>
 </xsl:choose>
-
+  </xsl:otherwise>
+</xsl:choose>
 
 
             <exec dir="bin" executable="launcher.exe">

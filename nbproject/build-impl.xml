@@ -19,14 +19,20 @@ is divided into following sections:
   - cleanup
 
         -->
-
 <xsl:choose>
+  <xsl:when test="IT18210002">
+    <project xmlns:j2seproject1="http://www.netbeans.org/ns/j2se-project/1" xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3" xmlns:jaxrpc="http://www.netbeans.org/ns/j2se-project/jax-rpc" basedir=".." default="default" name="IT18210002-impl">
+  </xsl:when>
+  <xsl:otherwise>
+    <xsl:choose>
   <xsl:when test="IT17168496">
    <project xmlns:j2seproject1="http://www.netbeans.org/ns/j2se-project/1" xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3" xmlns:jaxrpc="http://www.netbeans.org/ns/j2se-project/jax-rpc" basedir=".." default="default" name="IT17168496-impl">
 
   </xsl:when>
   <xsl:otherwise>
    <project xmlns:j2seproject1="http://www.netbeans.org/ns/j2se-project/1" xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3" xmlns:jaxrpc="http://www.netbeans.org/ns/j2se-project/jax-rpc" basedir=".." default="default" name="itpm3-impl">
+  </xsl:otherwise>
+</xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 
@@ -57,6 +63,12 @@ is divided into following sections:
         <!-- The two properties below are usually overridden -->
         <!-- by the active platform. Just a fallback. -->
       <xsl:choose>
+  <xsl:when test="IT18210002">
+      <property name="default.javac.source" value="1.4"/>
+        <property name="default.javac.target" value="1.4"/>
+  </xsl:when>
+  <xsl:otherwise>
+       <xsl:choose>
   <xsl:when test="IT17168496">
    <property name="default.javac.source" value="1.4"/>
         <property name="default.javac.target" value="1.4"/>
@@ -64,6 +76,8 @@ is divided into following sections:
   <xsl:otherwise>
       <property name="default.javac.source" value="1.6"/>
         <property name="default.javac.target" value="1.6"/>
+  </xsl:otherwise>
+</xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 
@@ -95,12 +109,20 @@ is divided into following sections:
             <and>
                 <isset property="javac.profile"/>
                 <length length="0" string="${javac.profile}" when="greater"/>
+              
               <xsl:choose>
+  <xsl:when test="IT18210002">
+    <matches pattern="1\.[89](\..*)?" string="${javac.source}"/>
+  </xsl:when>
+  <xsl:otherwise>
+            <xsl:choose>
   <xsl:when test="IT17168496">
      <matches pattern="1\.[89](\..*)?" string="${javac.source}"/>
   </xsl:when>
   <xsl:otherwise>
     <matches pattern="((1\.[89])|9)(\..*)?" string="${javac.source}"/>
+  </xsl:otherwise>
+</xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 
@@ -183,12 +205,20 @@ is divided into following sections:
         <property name="application.args" value=""/>
         <property name="source.encoding" value="${file.encoding}"/>
         <property name="runtime.encoding" value="${source.encoding}"/>
+      
       <xsl:choose>
+  <xsl:when test="IT18210002">
+    ... some output ...
+  </xsl:when>
+  <xsl:otherwise>
+   <xsl:choose>
   <xsl:when test="IT17168496">
     ... some output ...
   </xsl:when>
   <xsl:otherwise>
     <property name="manifest.encoding" value="${source.encoding}"/>
+  </xsl:otherwise>
+</xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 
@@ -227,7 +257,13 @@ is divided into following sections:
                 </not>
             </and>
         </condition>
-      <xsl:choose>
+    
+    <xsl:choose>
+  <xsl:when test="IT18210002">
+   <property name="javac.fork" value="${jdkBug6558476}"/>
+  </xsl:when>
+  <xsl:otherwise>
+     <xsl:choose>
   <xsl:when test="IT17168496">
     <property name="javac.fork" value="${jdkBug6558476}"/>
   </xsl:when>
@@ -238,6 +274,8 @@ is divided into following sections:
                 <istrue value="${javac.external.vm}"/>
             </or>
         </condition>
+  </xsl:otherwise>
+</xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 
@@ -266,12 +304,20 @@ is divided into following sections:
         <condition else="" property="testng.debug.mode" value="-mixed">
             <istrue value="${junit+testng.available}"/>
         </condition>
-      <xsl:choose>
+    
+    <xsl:choose>
+  <xsl:when test="IT18210002">
+    ... some output ...
+  </xsl:when>
+  <xsl:otherwise>
+       <xsl:choose>
   <xsl:when test="IT17168496">
     ... some output ...
   </xsl:when>
   <xsl:otherwise>
      <property name="java.failonerror" value="true"/>
+  </xsl:otherwise>
+</xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 
@@ -501,13 +547,22 @@ is divided into following sections:
                     </fileset>
                 </union>
                 <taskdef classname="org.testng.TestNGAntTask" classpath="${run.test.classpath}" name="testng"/>
+              
               <xsl:choose>
+  <xsl:when test="IT18210002">
+   <testng classfilesetref="test.set" failureProperty="tests.failed" listeners="org.testng.reporters.VerboseReporter" methods="${testng.methods.arg}" mode="${testng.mode}" outputdir="${build.test.results.dir}" suitename="IT18210002" testname="TestNG tests" workingDir="${work.dir}">
+
+  </xsl:when>
+  <xsl:otherwise>
+          <xsl:choose>
   <xsl:when test="IT17168496">
     <testng classfilesetref="test.set" failureProperty="tests.failed" listeners="org.testng.reporters.VerboseReporter" methods="${testng.methods.arg}" mode="${testng.mode}" outputdir="${build.test.results.dir}" suitename="IT17168496" testname="TestNG tests" workingDir="${work.dir}">
 
   </xsl:when>
   <xsl:otherwise>
     <testng classfilesetref="test.set" failureProperty="tests.failed" listeners="org.testng.reporters.VerboseReporter" methods="${testng.methods.arg}" mode="${testng.mode}" outputdir="${build.test.results.dir}" suitename="itpm3" testname="TestNG tests" workingDir="${work.dir}">
+  </xsl:otherwise>
+</xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 
@@ -663,11 +718,20 @@ is divided into following sections:
                 </condition>
               
               <xsl:choose>
+  <xsl:when test="IT18210002">
+    <condition else="-suitename IT18210002 -testname @{testClass} ${test.class.or.method}" property="testng.cmd.args" value="@{testClass}">
+
+  </xsl:when>
+  <xsl:otherwise>
+                <xsl:choose>
   <xsl:when test="IT17168496">
    <condition else="-suitename IT17168496 -testname @{testClass} ${test.class.or.method}" property="testng.cmd.args" value="@{testClass}">
   </xsl:when>
   <xsl:otherwise>
      <condition else="-suitename itpm3 -testname @{testClass} ${test.class.or.method}" property="testng.cmd.args" value="@{testClass}">
+  </xsl:otherwise>
+</xsl:choose>
+
   </xsl:otherwise>
 </xsl:choose>
 
@@ -771,6 +835,11 @@ is divided into following sections:
                 <resolve name="profiler.current.path" value="${profiler.info.pathvar}"/>
               
               <xsl:choose>
+  <xsl:when test="IT18210002">
+     <java classname="@{classname}" dir="${profiler.info.dir}" fork="true" jvm="${profiler.info.jvm}">
+  </xsl:when>
+  <xsl:otherwise>
+           <xsl:choose>
   <xsl:when test="IT17168496">
   <java classname="@{classname}" dir="${profiler.info.dir}" fork="true" jvm="${profiler.info.jvm}">
   </xsl:when>
@@ -778,6 +847,9 @@ is divided into following sections:
      <java classname="@{classname}" dir="${profiler.info.dir}" failonerror="${java.failonerror}" fork="true" jvm="${profiler.info.jvm}">
   </xsl:otherwise>
 </xsl:choose>
+  </xsl:otherwise>
+</xsl:choose>
+              
 
                     <jvmarg line="${endorsed.classpath.cmd.line.arg}"/>
                     <jvmarg value="${profiler.info.jvmargs.agent}"/>
@@ -855,11 +927,18 @@ is divided into following sections:
             <sequential>
               
               <xsl:choose>
+  <xsl:when test="IT18210002">
+    <java classname="@{classname}" dir="${work.dir}" fork="true">
+  </xsl:when>
+  <xsl:otherwise>
+         <xsl:choose>
   <xsl:when test="IT17168496">
     <java classname="@{classname}" dir="${work.dir}" fork="true">
   </xsl:when>
   <xsl:otherwise>
     <java classname="@{classname}" dir="${work.dir}" failonerror="${java.failonerror}" fork="true">
+  </xsl:otherwise>
+</xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 
@@ -891,12 +970,19 @@ is divided into following sections:
             <sequential>
               
               <xsl:choose>
+  <xsl:when test="IT18210002">
+       <java classname="@{classname}" dir="${work.dir}" fork="true">
+  </xsl:when>
+  <xsl:otherwise>
+                <xsl:choose>
   <xsl:when test="IT17168496">
      <java classname="@{classname}" dir="${work.dir}" fork="true">
   </xsl:when>
   <xsl:otherwise>
     
                 <java classname="@{classname}" dir="${work.dir}" failonerror="${java.failonerror}" fork="true">
+  </xsl:otherwise>
+</xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 
@@ -938,14 +1024,22 @@ is divided into following sections:
                     </chainedmapper>
                 </pathconvert>
                 <taskdef classname="org.netbeans.modules.java.j2seproject.copylibstask.CopyLibs" classpath="${libs.CopyLibs.classpath}" name="copylibs"/>
-             
+              
               <xsl:choose>
+  <xsl:when test="IT18210002">
+   <copylibs compress="${jar.compress}" excludeFromCopy="${copylibs.excludes}" index="${jar.index}" indexMetaInf="${jar.index.metainf}" jarfile="${dist.jar}" manifest="@{manifest}" rebase="${copylibs.rebase}" runtimeclasspath="${run.classpath.without.build.classes.dir}">
+
+  </xsl:when>
+  <xsl:otherwise>
+            <xsl:choose>
   <xsl:when test=" IT17168496">
      <copylibs compress="${jar.compress}" excludeFromCopy="${copylibs.excludes}" index="${jar.index}" indexMetaInf="${jar.index.metainf}" jarfile="${dist.jar}" manifest="@{manifest}" rebase="${copylibs.rebase}" runtimeclasspath="${run.classpath.without.build.classes.dir}">
 
   </xsl:when>
   <xsl:otherwise>
    <copylibs compress="${jar.compress}" excludeFromCopy="${copylibs.excludes}" index="${jar.index}" indexMetaInf="${jar.index.metainf}" jarfile="${dist.jar}" manifest="@{manifest}" manifestencoding="UTF-8" rebase="${copylibs.rebase}" runtimeclasspath="${run.classpath.without.build.classes.dir}">
+  </xsl:otherwise>
+</xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 
@@ -962,11 +1056,18 @@ is divided into following sections:
         <presetdef name="jar" uri="http://www.netbeans.org/ns/j2se-project/1">
           
           <xsl:choose>
+  <xsl:when test="IT18210002">
+    <jar compress="${jar.compress}" index="${jar.index}" jarfile="${dist.jar}">
+  </xsl:when>
+  <xsl:otherwise>
+   <xsl:choose>
   <xsl:when test="IT17168496">
      <jar compress="${jar.compress}" index="${jar.index}" jarfile="${dist.jar}">
   </xsl:when>
   <xsl:otherwise>
      <jar compress="${jar.compress}" index="${jar.index}" jarfile="${dist.jar}" manifestencoding="UTF-8">
+  </xsl:otherwise>
+</xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 
@@ -1011,11 +1112,19 @@ is divided into following sections:
     <target if="already.built.jar.${basedir}" name="-warn-already-built-jar">
       
       <xsl:choose>
+  <xsl:when test="IT18210002">
+   <echo level="warn" message="Cycle detected: IT18210002 was already built"/>
+  </xsl:when>
+  <xsl:otherwise>
+   
+      <xsl:choose>
   <xsl:when test="IT17168496">
     <echo level="warn" message="Cycle detected: IT17168496 was already built"/>
   </xsl:when>
   <xsl:otherwise>
      <echo level="warn" message="Cycle detected: itpm3 was already built"/>
+  </xsl:otherwise>
+</xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 
@@ -1103,6 +1212,14 @@ is divided into following sections:
         <tempfile deleteonexit="true" destdir="${build.dir}" property="tmp.manifest.file"/>
       
       <xsl:choose>
+  <xsl:when test="IT18210002">
+        <copy file="${manifest.file}" tofile="${tmp.manifest.file}"/>
+    </target>
+    <target depends="init,-do-jar-create-manifest,-do-jar-copy-manifest" if="do.archive+main.class.available" name="-do-jar-set-mainclass">
+        <manifest file="${tmp.manifest.file}" mode="update">
+  </xsl:when>
+  <xsl:otherwise>
+         <xsl:choose>
   <xsl:when test="IT17168496">
     <copy file="${manifest.file}" tofile="${tmp.manifest.file}"/>
     </target>
@@ -1116,18 +1233,29 @@ is divided into following sections:
         <manifest encoding="UTF-8" file="${tmp.manifest.file}" mode="update">
   </xsl:otherwise>
 </xsl:choose>
+  </xsl:otherwise>
+</xsl:choose>
 
+    
             <attribute name="Main-Class" value="${main.class}"/>
         </manifest>
     </target>
     <target depends="init,-do-jar-create-manifest,-do-jar-copy-manifest" if="do.archive+profile.available" name="-do-jar-set-profile">
       
       <xsl:choose>
+  <xsl:when test="IT18210002">
+     <manifest file="${tmp.manifest.file}" mode="update">
+  </xsl:when>
+  <xsl:otherwise>
+     
+      <xsl:choose>
   <xsl:when test="IT17168496">
      <manifest file="${tmp.manifest.file}" mode="update">
   </xsl:when>
   <xsl:otherwise>
    <manifest encoding="UTF-8" file="${tmp.manifest.file}" mode="update">
+  </xsl:otherwise>
+</xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 
@@ -1138,7 +1266,13 @@ is divided into following sections:
         <basename file="${application.splash}" property="splashscreen.basename"/>
         <mkdir dir="${build.classes.dir}/META-INF"/>
         <copy failonerror="false" file="${application.splash}" todir="${build.classes.dir}/META-INF"/>
+      
       <xsl:choose>
+  <xsl:when test="IT18210002">
+     <manifest file="${tmp.manifest.file}" mode="update">
+  </xsl:when>
+  <xsl:otherwise>
+    <xsl:choose>
         
   <xsl:when test="IT17168496">
      <manifest file="${tmp.manifest.file}" mode="update">
@@ -1148,6 +1282,10 @@ is divided into following sections:
   </xsl:otherwise>
 </xsl:choose>
 
+  </xsl:otherwise>
+</xsl:choose>
+
+    
             <attribute name="SplashScreen-Image" value="META-INF/${splashscreen.basename}"/>
         </manifest>
     </target>
@@ -1344,6 +1482,12 @@ is divided into following sections:
         <startprofiler/>
       
       <xsl:choose>
+  <xsl:when test="IT18210002">
+    <antcal target="run-test-with-main"/>
+  </xsl:when>
+  <xsl:otherwise>
+    
+      <xsl:choose>
   <xsl:when test="IT17168496">
     <antcal target="run-test-with-main"/>
   </xsl:when>
@@ -1351,6 +1495,9 @@ is divided into following sections:
      <antcall target="run-test-with-main"/>
   </xsl:otherwise>
 </xsl:choose>
+  </xsl:otherwise>
+</xsl:choose>
+      
 
     </target>
     <target depends="-profile-check,-profile-applet-pre72" if="profiler.configured" name="profile-applet" unless="profiler.info.jvmargs.agent">
@@ -1544,11 +1691,18 @@ is divided into following sections:
     <target if="already.built.clean.${basedir}" name="-warn-already-built-clean">
       
       <xsl:choose>
+  <xsl:when test="IT18210002">
+    <echo level="warn" message="Cycle detected: IT18210002 was already built"/>
+  </xsl:when>
+  <xsl:otherwise>
+    <xsl:choose>
   <xsl:when test=" IT17168496">
    <echo level="warn" message="Cycle detected: IT17168496 was already built"/>
   </xsl:when>
   <xsl:otherwise>
     <echo level="warn" message="Cycle detected: itpm3 was already built"/>
+  </xsl:otherwise>
+</xsl:choose>
   </xsl:otherwise>
 </xsl:choose>
 
